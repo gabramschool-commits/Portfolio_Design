@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Gabriel Mar Ramirez | Portfolio V3</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+<style>
+html{scroll-behavior:smooth}
+
+body{
+margin:0;
+overflow:hidden;
+background:#050816;
+font-family:Inter,system-ui,sans-serif;
+color:white;
+}
+
+/* Atmosphere */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,140,255,.14), transparent 30%),
+radial-gradient(circle at 80% 70%, rgba(180,0,255,.12), transparent 35%),
+radial-gradient(circle at 50% 50%, rgba(255,255,255,.02), transparent 45%);
+animation:ambient 12s ease-in-out infinite alternate;
+z-index:-3;
+}
+
+@keyframes ambient{
+0%{transform:scale(1)}
+100%{transform:scale(1.12) translateY(-25px)}
+}
+
+canvas{
+position:fixed;
+inset:0;
+z-index:-2;
+}
+
+*{cursor:none}
+
+.cursor{
+width:18px;
+height:18px;
+border:2px solid white;
+border-radius:50%;
+position:fixed;
+pointer-events:none;
+mix-blend-mode:difference;
+z-index:99999;
+transform:translate(-50%,-50%);
+}
+
+.glass{
+background:rgba(255,255,255,.035);
+border:1px solid rgba(255,255,255,.06);
+backdrop-filter:blur(26px) saturate(140%);
+-webkit-backdrop-filter:blur(26px) saturate(140%);
+box-shadow:
+0 10px 30px rgba(0,0,0,.18),
+inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.glass1{
+background:rgba(255,255,255,.035);
+border:1px solid rgba(255,255,255,.06);
+backdrop-filter:blur(0px) saturate(140%);
+-webkit-backdrop-filter:blur(0px) saturate(140%);
+box-shadow:
+0 10px 30px rgba(0,0,0,.18),
+inset 0 1px 0 rgba(255,255,255,.04);
+} 
+
+nav{
+position:fixed;
+top:0;
+left:0;
+right:0;
+z-index:100;
+}
+
+.story-section{
+position:absolute;
+inset:0;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:2rem;
+opacity:0;
+pointer-events:none;
+transform:scale(.88) translateY(30px);
+transition:1s cubic-bezier(.22,1,.36,1);
+}
+
+.story-section.active{
+opacity:1;
+pointer-events:auto;
+transform:scale(1) translateY(0);
+}
+
+.hero-title{
+font-size:clamp(3rem,8vw,7rem);
+font-weight:900;
+line-height:.95;
+letter-spacing:-3px;
+}
+
+.section-title{
+font-size:clamp(2.5rem,5vw,4rem);
+font-weight:800;
+margin-bottom:2rem;
+}
+
+.small{
+color:rgba(255,255,255,.72);
+}
+
+.timeline-node{
+transition:.35s ease;
+}
+
+.timeline-node:hover{
+transform:translateX(12px);
+}
+
+.project-card{
+border-radius:1.5rem;
+padding:2rem;
+min-height:220px;
+transition:.25s ease;
+transform-style:preserve-3d;
+}
+
+.project-card:hover{
+box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.big-card{
+grid-column:span 2;
+min-height:320px;
+}
+
+.cta-btn{
+padding:.9rem 1.3rem;
+border-radius:999px;
+border:1px solid rgba(255,255,255,.08);
+transition:.25s ease;
+}
+
+.cta-btn:hover{
+transform:translateY(-3px);
+background:rgba(255,255,255,.05);
+}
+
+.scroll-tip{
+position:fixed;
+bottom:26px;
+left:50%;
+transform:translateX(-50%);
+font-size:.8rem;
+letter-spacing:3px;
+opacity:.55;
+animation:bounce 1.8s infinite;
+z-index:40;
+}
+
+@keyframes bounce{
+50%{transform:translateX(-50%) translateY(-8px)}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="scroll-tip">SCROLL</div>
+
+<nav class="glass px-8 py-4 flex justify-between items-center">
+<div class="font-bold text-xl">GMR</div>
+<div class="space-x-6 text-sm hidden md:block">
+<span>Home</span>
+<span>Journey</span>
+<span>Projects</span>
+<span>Contact</span>
+</div>
+</nav>
+
+<!-- HOME -->
+<section class="story-section active">
+<div class="max-w-7xl w-full grid md:grid-cols-2 gap-12 items-center">
+
+<div>
+<h1 class="hero-title mb-5">
+Gabriel Mar<br>Ramirez
+</h1>
+
+<p class="text-xl mb-6">
+<span id="typed"></span>
+</p>
+
+<p class="small max-w-xl mb-8">
+Building intelligent systems, immersive interfaces, and future-ready digital experiences.
+</p>
+
+<div class="flex gap-4 flex-wrap">
+
+</div>
+</div>
+
+<!-- vertical side list -->
+<div class="max-w-sm ml-auto w-full space-y-4">
+
+<div class="glass1 rounded-3xl p-6">
+<p class="text-sm opacity-60 mb-1">01</p>
+<h3 class="text-xl font-semibold">AI Projects</h3>
+</div>
+
+<div class="glass1 rounded-3xl p-6">
+<p class="text-sm opacity-60 mb-1">02</p>
+<h3 class="text-xl font-semibold">Data Science</h3>
+</div>
+
+<div class="glass1 rounded-3xl p-6">
+<p class="text-sm opacity-60 mb-1">03</p>
+<h3 class="text-xl font-semibold">Web Development</h3>
+</div>
+
+</div>
+
+</div>
+</section>
+
+<!-- Interactive Timeline -->
+<section id="timeline" class="story-section px-8" style="transform-style: preserve-3d;">
+  <div class="max-w-4xl mx-auto w-full">
+    <h2 class="text-5xl font-bold mb-12">Journey</h2>
+    <div class="space-y-10 border-l border-white/20 pl-8">
+      <div class="timeline-node">
+        <h3 class="text-2xl font-bold">Started Coding</h3>
+        <p>Built my foundation in programming.</p>
+      </div>
+      <div class="timeline-node">
+        <h3 class="text-2xl font-bold">Learned Data Visualization</h3>
+        <p>Explored data storytelling through charts, dashboards, and analytics.</p>
+      </div>
+      <div class="timeline-node">
+        <h3 class="text-2xl font-bold">Web Development</h3>
+        <p>Built interactive websites and modern user interfaces.</p>
+      </div>
+      <div class="timeline-node">
+        <h3 class="text-2xl font-bold">Started Generative AI</h3>
+        <p>Worked with LLMs, AI agents, and creative AI applications.</p>
+      </div>
+      <div class="timeline-node">
+        <h3 class="text-2xl font-bold">Machine Learning</h3>
+        <p>Built predictive models and intelligent systems.</p>
+      </div>
+      <div class="timeline-node">
+        <h3 class="text-2xl font-bold">Pyro-Vision</h3>
+        <p>Coming Soon...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="story-section">
+<div class="max-w-7xl w-full">
+<h2 class="section-title">Selected Work</h2>
+
+<div class="grid md:grid-cols-4 gap-5">
+
+<a href="https://huggingface.co/spaces/Starburst15/Data_Analysis_Chatbot" target="_blank" class="project-card big-card glass">
+<h3 class="text-2xl font-bold mb-3">Data Analysis Chatbot</h3>
+<p class="small">Upload CSV or Excel files, auto-clean data, create visualizations, and generate AI insights.</p>
+</a>
+
+<a href="https://huggingface.co/spaces/gabramschool/AI-MOBA-Gaming-Chatbot" target="_blank" class="project-card glass">
+<h3 class="font-bold mb-2">AI Gaming Coach</h3>
+<p class="small">MOBA strategy assistant.</p>
+</a>
+
+<a href="https://huggingface.co/spaces/gabramschool/Devils_Ad" target="_blank" class="project-card glass">
+<h3 class="font-bold mb-2">Devil's Advocate AI</h3>
+<p class="small">Strategic counterarguments.</p>
+</a>
+
+<a href="https://github.com/charesz/Hogwarts" target="_blank" class="project-card glass">
+<h3 class="font-bold mb-2">Hogwarts Experience</h3>
+<p class="small">Immersive fantasy website.</p>
+</a>
+
+<a href="#" class="project-card glass">
+<h3 class="font-bold mb-2">Pyro-Vision</h3>
+<p class="small">Intelligent multimodal fire detection system.</p>
+</a>
+
+</div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section class="story-section">
+<div class="max-w-4xl text-center">
+<h2 class="hero-title mb-6">Let's Build Something Intelligent</h2>
+<p class="small mb-8">Open to ideas, research, and collaborations.</p>
+
+<div class="flex gap-4 justify-center flex-wrap">
+<a class="cta-btn glass" href="https://github.com/gabramschool-commits">GitHub</a>
+</div>
+</div>
+</section>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop preload="auto">
+<source src="Hans Zimmer - Interstellar (Space Sounds).mp3" type="audio/mpeg">
+</audio>
+
+<audio id="hoverSound" preload="auto">
+<source src="your-hover.wav" type="audio/wav">
+</audio>
+
+<audio id="scrollWhoosh" preload="auto">
+<source src="your-whoosh.wav" type="audio/wav">
+</audio>
+
+<audio id="clickSound" preload="auto">
+<source src="your-click.wav" type="audio/wav">
+</audio>
+
+<script>
+/* Typed */
+new Typed('#typed',{
+strings:[
+'Data Science Student',
+'Generative AI Explorer',
+'USTP 3rd Year Student',
+'Creative Technologist'
+],
+typeSpeed:55,
+backSpeed:28,
+loop:true
+});
+
+/* Cursor */
+const cursor=document.getElementById('cursor');
+let mx=0,my=0;
+
+window.addEventListener('mousemove',e=>{
+mx=e.clientX;
+my=e.clientY;
+});
+
+function animateCursor(){
+cursor.style.left=mx+'px';
+cursor.style.top=my+'px';
+requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+/* Audio */
+const bgMusic=document.getElementById('bgMusic');
+const hoverSound=document.getElementById('hoverSound');
+const scrollWhoosh=document.getElementById('scrollWhoosh');
+const clickSound=document.getElementById('clickSound');
+
+bgMusic.volume=.22;
+hoverSound.volume=.35;
+scrollWhoosh.volume=.45;
+clickSound.volume=.35;
+
+window.addEventListener('click',()=>{
+bgMusic.play().catch(()=>{});
+},{once:true});
+
+/* Sections */
+const sections=document.querySelectorAll('.story-section');
+let currentSection=0;
+let locked=false;
+let progress=0;
+let targetProgress=0;
+
+window.addEventListener('wheel',e=>{
+if(locked)return;
+locked=true;
+
+scrollWhoosh.currentTime=0;
+scrollWhoosh.play().catch(()=>{});
+
+const dir=e.deltaY>0?1:-1;
+currentSection+=dir;
+currentSection=Math.max(0,Math.min(currentSection,sections.length-1));
+
+targetProgress=currentSection/(sections.length-1);
+
+sections.forEach((s,i)=>s.classList.toggle('active',i===currentSection));
+
+setTimeout(()=>locked=false,900);
+});
+
+/* Hover audio */
+document.querySelectorAll('a,.glass,.timeline-node').forEach(el=>{
+el.addEventListener('mouseenter',()=>{
+hoverSound.currentTime=0;
+hoverSound.play().catch(()=>{});
+});
+});
+
+document.querySelectorAll('a,button').forEach(el=>{
+el.addEventListener('click',()=>{
+clickSound.currentTime=0;
+clickSound.play().catch(()=>{});
+});
+});
+
+/* Tilt cards */
+document.querySelectorAll('.project-card').forEach(card=>{
+card.addEventListener('mousemove',e=>{
+const r=card.getBoundingClientRect();
+const x=e.clientX-r.left;
+const y=e.clientY-r.top;
+
+const rx=(0.5-y/r.height)*10;
+const ry=(x/r.width-0.5)*10;
+
+card.style.transform=`perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+});
+
+card.addEventListener('mouseleave',()=>{
+card.style.transform='perspective(1000px) rotateX(0) rotateY(0)';
+});
+});
+
+/* THREE JS */
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(
+75,
+window.innerWidth/window.innerHeight,
+0.1,
+3000
+);
+
+const renderer=new THREE.WebGLRenderer({
+canvas:document.getElementById('bg'),
+alpha:true,
+antialias:true
+});
+
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+
+/* Lights */
+const light1=new THREE.PointLight(0x66ccff,3,300);
+light1.position.set(20,20,20);
+scene.add(light1);
+
+const light2=new THREE.PointLight(0xaa66ff,2,300);
+light2.position.set(-20,-10,20);
+scene.add(light2);
+
+/* Main Object */
+const geo=new THREE.TorusKnotGeometry(10,3,150,18);
+const mat=new THREE.MeshStandardMaterial({
+color:0x88ccff,
+wireframe:true,
+emissive:0x2255ff,
+emissiveIntensity:1.2
+});
+
+const torus=new THREE.Mesh(geo,mat);
+scene.add(torus);
+
+/* Crystal */
+const crystalGeo=new THREE.IcosahedronGeometry(8,1);
+const crystalMat=new THREE.MeshStandardMaterial({
+wireframe:true,
+color:0xffffff,
+emissive:0xaa66ff,
+emissiveIntensity:1
+});
+
+const crystal=new THREE.Mesh(crystalGeo,crystalMat);
+crystal.position.set(-40,-18,-70);
+scene.add(crystal);
+
+/* Particles */
+const starsGeo=new THREE.BufferGeometry();
+const count=1200;
+const pos=new Float32Array(count*3);
+
+for(let i=0;i<count*3;i++){
+pos[i]=(Math.random()-0.5)*260;
+}
+
+starsGeo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+
+const stars=new THREE.Points(
+starsGeo,
+new THREE.PointsMaterial({size:.7})
+);
+
+scene.add(stars);
+
+/* Scene stages */
+const sceneStages=[
+{z:60,x:0,y:0,lookX:-10},
+{z:42,x:-15,y:-4,lookX:-25},
+{z:22,x:-28,y:-12,lookX:-38},
+{z:5,x:-42,y:-20,lookX:-52}
+];
+
+/* Mouse parallax */
+let tx=0,ty=0;
+
+window.addEventListener('mousemove',e=>{
+tx=(e.clientX/window.innerWidth-.5)*5;
+ty=(e.clientY/window.innerHeight-.5)*3;
+});
+
+/* Animate */
+function animate(){
+requestAnimationFrame(animate);
+
+progress += (targetProgress-progress)*0.08;
+
+const stageIndex=Math.min(
+Math.floor(progress*(sceneStages.length-1)),
+sceneStages.length-2
+);
+
+const local=(progress*(sceneStages.length-1))-stageIndex;
+
+const from=sceneStages[stageIndex];
+const to=sceneStages[stageIndex+1];
+
+const targetZ=from.z+(to.z-from.z)*local;
+const targetX=from.x+(to.x-from.x)*local;
+const targetY=from.y+(to.y-from.y)*local;
+const lookX=from.lookX+(to.lookX-from.lookX)*local;
+
+/* Camera movement */
+camera.position.z += (targetZ-camera.position.z)*0.05;
+camera.position.x += ((targetX+tx)-camera.position.x)*0.04;
+camera.position.y += ((targetY-ty)-camera.position.y)*0.04;
+
+camera.lookAt(lookX,0,0);
+
+/* Object animation */
+torus.rotation.x += .0025;
+torus.rotation.y += .0035;
+torus.scale.setScalar(1+(60-camera.position.z)*0.015);
+
+crystal.rotation.y += .004;
+crystal.visible=progress>.45;
+
+/* Particle sync */
+stars.rotation.y += .0008 + progress*.0015;
+stars.position.x += ((camera.position.x*.45)-stars.position.x)*0.02;
+stars.position.y += ((camera.position.y*.45)-stars.position.y)*0.02;
+
+/* Atmosphere colors */
+if(currentSection===0) mat.emissive.setHex(0x2255ff);
+if(currentSection===1) mat.emissive.setHex(0xaa33ff);
+if(currentSection===2) mat.emissive.setHex(0xffaa22);
+if(currentSection===3) mat.emissive.setHex(0xffffff);
+
+renderer.render(scene,camera);
+}
+animate();
+
+/* Resize */
+window.addEventListener('resize',()=>{
+camera.aspect=window.innerWidth/window.innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(window.innerWidth,window.innerHeight);
+});
+</script>
+
+</body>
+</html>
